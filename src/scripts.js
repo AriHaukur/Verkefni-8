@@ -1,11 +1,25 @@
-import { updateStats, createTodoItem } from "./lib/todo.js";
+// @ts-ignore
+import { updateStats, createTodoItem, clearList, Togglefinished} from "./lib/todo.js";
 
-/* TODO import á allt viðeigandi úr ./lib/todo.js */
+
+  
+
+
 /**
  * @param {HTMLElement} todolist
  */
 function initialize(todolist) {
   const form = todolist.querySelector('.form')
+
+const clearButton = todolist.querySelector("Clear all")
+
+if(clearButton)
+  clearButton.addEventListener("click", ()=>{
+    clearList(todolist);
+    updateStats(todolist); }); 
+    else{
+
+    }
 
   if (!form) {
     console.error('form fannst ekki, hætti')

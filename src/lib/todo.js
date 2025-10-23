@@ -1,5 +1,7 @@
 /* TODO hugsanlega importa el, empty úr ./elements.js */
 
+import {el, empty} from "./elements.js"
+
 // Leyfilegt að breyta skilgreiningum á föllum og bæta við fleiri föllum.
 
 /* TODO merkja viðeigandi föll með `export` */
@@ -49,9 +51,21 @@ function toggleFinished(todolist) {
  * @param {HTMLElement} todolist
  * @return {void}
  */
-function clearList(todolist) {
-  /* TODO útfæra */
-}
+export function clearList(todolist) {
+
+  const list = todolist.querySelector(".list");
+  if(!list) {
+    return;
+  }
+  if(confirm("ertu viss?")){
+    empty(list);
+
+  }
+  checkListState(todolist);
+  }
+
+
+  
 
 /**
  * Uppfærir upplýsingar um fjölda kláraðra og ókláraðra atriða í lista.
