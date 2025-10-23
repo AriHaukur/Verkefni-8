@@ -1,5 +1,5 @@
 // @ts-ignore
-import { updateStats, createTodoItem, clearList, Togglefinished} from "./lib/todo.js";
+import { checkListState, updateStats, createTodoItem, clearList, toggleTodoItemStatus, toggleFinished} from "./lib/todo.js";
 
 
   
@@ -11,7 +11,8 @@ import { updateStats, createTodoItem, clearList, Togglefinished} from "./lib/tod
 function initialize(todolist) {
   const form = todolist.querySelector('.form')
 
-const clearButton = todolist.querySelector("Clear all")
+//CLEAR BUTTON HERE
+const clearButton = todolist.querySelector(".clear-all")
 
 if(clearButton)
   clearButton.addEventListener("click", ()=>{
@@ -19,6 +20,18 @@ if(clearButton)
     updateStats(todolist); }); 
     else{
 
+    }
+
+    //FELA KLÁRUÐ HÉR
+    const toggleButton = todolist.querySelector('.toggle-finished');
+    if(toggleButton) {
+      toggleButton.addEventListener("click", ()=> {
+
+        const isShown = toggleFinished(todolist);
+        toggleButton.textContent = isShown ? 'Fela Kláruð atriði' : 'Sýna kláruð atriði';
+
+    });
+  
     }
 
   if (!form) {
@@ -41,8 +54,16 @@ if(clearButton)
 
     // TODO staðfesta að value er OK
 
+    const clean = value.trim();
+
+    if(clean.length == 0) {
+    input.style = "border-color:red"
+      return
+    } 
+
     createTodoItem(todolist, value);
     updateStats(todolist);
+    input.value = "";
   })
   
   

@@ -12,9 +12,16 @@ import {el, empty} from "./elements.js"
  * @param {boolean} isShown `true` ef kláruð atriði eru sýnileg, annars `false`.
  * @returns {void}
  */
-function toggleTodoItemStatus(item, isShown = true) {
-  /* TODO útfæra */
-}
+export function toggleTodoItemStatus(item, isShown = true) {
+  item.classList.toggle('finished');
+  if(!isShown && item.classList.contains('finished')){
+    item.classList.add('hidden');
+  } else if (isShown){
+    item.classList.remove('hidden');
+  }
+  }
+  
+
 
 /**
  * Fjarlægja atriði (sem DOM element) úr lista.
@@ -42,9 +49,23 @@ function removeTodoItem(item) {
  * @param {HTMLElement} todolist
  * @return {boolean} `true` if finished items are shown, `false` if hidden
  */
-function toggleFinished(todolist) {
-  /* TODO útfæra */
-}
+export function toggleFinished(todolist) {
+  const finishedItems = todolist.querySelectorAll('.list li.finished');
+  const currentState = todolist.getAttribute('data-finished');
+  
+  if(currentState === 'shown') {
+    finishedItems.forEach(item => item.classList.add('hidden'));
+    todolist.setAttribute('data-finished', 'hidden');
+    return false;
+  } else {
+    finishedItems.forEach(item => item.classList.remove('hidden'));
+    todolist.setAttribute('data-finished', 'shown');
+    return true;
+    }    
+  }
+
+  
+
 
 /**
  * Hreinsar allan lista.
@@ -61,7 +82,6 @@ export function clearList(todolist) {
     empty(list);
 
   }
-  checkListState(todolist);
   }
 
 
@@ -93,6 +113,8 @@ export function updateStats(todolist) {
 
   finishedEl.textContent = finishedCount.toString();
   unfinishedEl.textContent = unfinishedCount.toString();
+
+  checkListState(todolist);
 }
 
 /**
@@ -102,6 +124,8 @@ export function updateStats(todolist) {
  * @return {void}
  */
 export function createTodoItem(todolist, text) {
+
+  
   // console.log('hi frá createTodoItem', todolist, text)
 
   /*
@@ -129,6 +153,9 @@ export function createTodoItem(todolist, text) {
   input.setAttribute("type", "checkbox");
   input.setAttribute("name", "finished");
   input.addEventListener("change", () => {
+    const isShown = todolist.getAttribute('data-finished') === 'shown';
+    toggleTodoItemStatus(li, isShown);
+    updateStats(todolist);
     console.log("input", input.checked);
   });
 
@@ -152,6 +179,12 @@ export function createTodoItem(todolist, text) {
  * @param {HTMLElement} todolist
  * @return {void}
  */
-function checkListState(todolist) {
+export function checkListState(todolist) {
   /* TODO útfæra */
+  if(todolist.querySelectorAll("li").length == 0){
+    todolist.querySelectorAll(".empty")[0].classList = "empty";
+  }else{
+        todolist.querySelectorAll(".empty")[0].classList = "empty hidden";
+
+  }
 }
